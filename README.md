@@ -4,12 +4,12 @@ An individual Math Practice assignment project for children ages 7–12. React, 
 
 ## Current verification status
 
-**Core and interface tests, linting, and the production build pass. Browser and public deployment checks are still pending.**
+**Core and interface tests, linting, and the production build pass. The public Netlify app passed focused browser checks; see docs/RELEASE_VERIFICATION.md for coverage and limits.**
 
 - 39 dependency-free Node tests pass. They include 16,000 generated arithmetic questions, 1,600 related questions, storage recovery, mastery, and a 5,000-attempt history.
 - After dependencies were installed from regular PowerShell, all 7 component/integration tests passed (46 total with the core suite). A test-environment AbortSignal mismatch and a session-completion redirect race were fixed.
-- Production build and lint pass. Browser accessibility/responsive checks and public deployment remain pending. Vitest was updated to 4.1.12 and its 7 interface tests pass. The student ran npm audit after installation and reported zero vulnerabilities.
-- Git is initialized with separate development commits. A student-owned GitHub remote is still needed.
+- Production build and lint pass. Focused public browser checks passed for practice, review, mastery, persistence, route refresh and a phone viewport. Full accessibility and cross-browser checks remain pending. Vitest was updated to 4.1.12 and its 7 interface tests pass. The student ran npm audit after installation and reported zero vulnerabilities.
+- Source and incremental commits are published at https://github.com/BigFergie82/Math_Website. The verified public app is https://hilarious-kataifi-ac3bd9.netlify.app/.
 
 ## Run locally
 

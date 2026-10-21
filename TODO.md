@@ -37,9 +37,9 @@ The original instructor checklist is preserved in INSTRUCTOR_TODO.md. This proje
 - [ ] Run formatting check
 - [x] Update Vitest to 4.1.12; interface tests pass; student reports zero audit vulnerabilities
 - [ ] Test production output locally
-- [ ] Public deployment verified
-- [ ] Push to the student's GitHub repository
+- [x] Public deployment verified with session, review, mastery and refresh checks
+- [x] Push source and incremental history to the student's GitHub repository
 - [x] Reconcile source implementation with supplied instructor specification and checklist
 - [ ] Student reviews report and adds personal observations
 
-Network restrictions blocked npm installation and Git source publishing. Browser access to the local report server also timed out. The project is not yet submission-ready; do not treat source inspection as release verification.
+The student completed installation, audit, GitHub publishing and Netlify deployment from regular PowerShell and their browser. The public app passed the focused checks recorded in docs/RELEASE_VERIFICATION.md. Wider browser/accessibility coverage remains unverified. Review the report before submission.

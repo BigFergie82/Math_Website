@@ -42,7 +42,7 @@ pass 39
 fail 0
 ```
 
-Run `node --test tests/core.test.mjs` to reproduce these checks. Interface tests are present in `tests/interface.test.jsx`; they were not run. The report explicitly preserves that distinction.
+Run `node --test tests/core.test.mjs` to reproduce these checks. At this initial stage the interface tests had not run. The later verification below supersedes that status.
 
 ## Local development history
 
@@ -51,3 +51,34 @@ Run `node --test tests/core.test.mjs` to reproduce these checks. Interface tests
 - Verification and handoff: core regression tests, pending interface tests, report, evidence and release instructions.
 
 Use `git log --oneline` in the included history to inspect the actual commits. Do not claim that local commits have been pushed to GitHub until a successful push is verified.
+
+## 4 Installation and real interface debugging
+
+The student first ran npm install from Desktop and received an ENOENT error for Desktop/package.json. The agent supplied the project-folder command; installation then succeeded.
+
+After installation, the interface tests exposed a React Router / jsdom AbortSignal mismatch and a real session-completion navigation race. The first issue was isolated in the test environment. For the second, the fifth result cleared the active session before the summary navigation completed, causing a redirect to setup. An explicit completion flag fixed that behavior. The five-question integration test passed after the fix.
+
+The student followed a targeted Vitest update, then supplied this audit result:
+
+```text
+found 0 vulnerabilities
+```
+
+The agent reran the 7 interface tests with Vitest 4.1.12. They passed. The 39 core tests, production build and lint checks also passed.
+
+## 5 Source publishing and deployment
+
+The student supplied the repository URL and executed the agent's Git push command. Their output confirmed:
+
+```text
+To https://github.com/BigFergie82/Math_Website.git
+ * [new branch]      HEAD -> main
+```
+
+The student imported the repository into Netlify and supplied `hilarious-kataifi-ac3bd9.netlify.app` as the deployed address.
+
+The agent opened the public app without a login and completed a five-question mixed session. Three right and two wrong self-reports yielded 60% accuracy and two reviewable patterns. Six successful related questions mastered both patterns. Statistics persisted across refresh and showed 11 attempts, 9 right answers and 82% rounded accuracy. Direct-route refresh and a limited phone-viewport layout check also worked. See RELEASE_VERIFICATION.md for exact coverage and remaining limits.
+
+Repository: https://github.com/BigFergie82/Math_Website
+
+Public app: https://hilarious-kataifi-ac3bd9.netlify.app/
