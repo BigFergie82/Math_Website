@@ -6,7 +6,7 @@ This record describes the current Math Garden development session. The supplied 
 
 **Student, exact message:**
 
-> Please review them, and complete the assignment. Let me know if there is any additional information you need. Here is a link to the example site: [https://harmonious-puffpuff-ac1acc.netlify.app/](https://harmonious-puffpuff-ac1acc.netlify.app/)
+> Please Build a responsive math practice website based on the assignment specification and reference site. Include arithmetic practice, mistake review, mastery tracking, statistics, and settings. Follow the supplied TODO and document the implementation, tests, and any limitations for submission. Here is a link to the example site: [https://harmonious-puffpuff-ac1acc.netlify.app/](https://harmonious-puffpuff-ac1acc.netlify.app/)
 
 **Agent, exact response:**
 
