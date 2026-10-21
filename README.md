@@ -8,7 +8,7 @@ An individual Math Practice assignment project for children ages 7–12. React, 
 
 - 39 dependency-free Node tests pass. They include 16,000 generated arithmetic questions, 1,600 related questions, storage recovery, mastery, and a 5,000-attempt history.
 - After dependencies were installed from regular PowerShell, all 7 component/integration tests passed (46 total with the core suite). A test-environment AbortSignal mismatch and a session-completion redirect race were fixed.
-- Production build and lint pass. Browser accessibility/responsive checks and public deployment remain pending. Cached npm audit data identifies the Vitest test-tool dependencies for an update; the security audit must be repeated after updating.
+- Production build and lint pass. Browser accessibility/responsive checks and public deployment remain pending. Vitest was updated to 4.1.12 and its 7 interface tests pass. The student ran npm audit after installation and reported zero vulnerabilities.
 - Git is initialized with separate development commits. A student-owned GitHub remote is still needed.
 
 ## Run locally

@@ -1,4 +1,4 @@
-import { builtinEnvironments } from 'vitest/environments';
+import { builtinEnvironments } from 'vitest/runtime';
 
 // React Router uses Node's Request in jsdom. Its AbortSignal must come from
 // the same realm; jsdom's browser AbortSignal is rejected by Node's fetch API.

@@ -35,7 +35,7 @@ The original instructor checklist is preserved in INSTRUCTOR_TODO.md. This proje
 - [x] Install dependencies and commit generated package-lock.json
 - [x] Run lint and production build
 - [ ] Run formatting check
-- [ ] Update Vitest test tooling and repeat audit/tests
+- [x] Update Vitest to 4.1.12; interface tests pass; student reports zero audit vulnerabilities
 - [ ] Test production output locally
 - [ ] Public deployment verified
 - [ ] Push to the student's GitHub repository
