@@ -22,7 +22,7 @@ The original instructor checklist is preserved in INSTRUCTOR_TODO.md. This proje
 - [x] 39 core tests pass, including 16,000 generated questions and 5,000-attempt history
 - [x] Corrupt category isolation, storage round trip and failure tests pass
 - [x] Component and integration test source supplied
-- [ ] Execute component/integration tests after dependency installation
+- [x] Execute component/integration tests after dependency installation (7 pass)
 - [ ] Complete browser, keyboard, screen-reader, contrast, zoom and responsive checks
 - [ ] Verify sound and animation preferences in a browser
 - [ ] Test Chrome, Edge, Firefox and Safari where available
@@ -32,8 +32,10 @@ The original instructor checklist is preserved in INSTRUCTOR_TODO.md. This proje
 - [x] Development report draft and current-session AI interaction evidence
 - [x] README, manual test plan, Netlify configuration and routing fallback
 - [x] Source archive and Git bundle prepared at handoff
-- [ ] Install dependencies and commit generated package-lock.json
-- [ ] Run lint/format checks and production build
+- [x] Install dependencies and commit generated package-lock.json
+- [x] Run lint and production build
+- [ ] Run formatting check
+- [ ] Update Vitest test tooling and repeat audit/tests
 - [ ] Test production output locally
 - [ ] Public deployment verified
 - [ ] Push to the student's GitHub repository

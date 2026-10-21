@@ -4,11 +4,11 @@ An individual Math Practice assignment project for children ages 7–12. React, 
 
 ## Current verification status
 
-**The core logic is tested. The application is not yet release-verified.**
+**Core and interface tests, linting, and the production build pass. Browser and public deployment checks are still pending.**
 
 - 39 dependency-free Node tests pass. They include 16,000 generated arithmetic questions, 1,600 related questions, storage recovery, mastery, and a 5,000-attempt history.
-- Component/integration tests are supplied but have not run because dependency installation was blocked by DNS/network restrictions in the development environment.
-- Production build, browser accessibility/responsive checks and public deployment are pending.
+- After dependencies were installed from regular PowerShell, all 7 component/integration tests passed (46 total with the core suite). A test-environment AbortSignal mismatch and a session-completion redirect race were fixed.
+- Production build and lint pass. Browser accessibility/responsive checks and public deployment remain pending. Cached npm audit data identifies the Vitest test-tool dependencies for an update; the security audit must be repeated after updating.
 - Git is initialized with separate development commits. A student-owned GitHub remote is still needed.
 
 ## Run locally
