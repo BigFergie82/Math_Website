@@ -7,6 +7,7 @@ const int=(min,max,rng)=>min+Math.floor(rng()*(max-min+1));
 export function signature(q){return [q.operation,q.difficulty,q.a,q.b].join(':');}
 export function question(operation,difficulty,rng=Math.random){
  if(!OPS[operation]||![1,2,3,4].includes(difficulty))throw new Error('Invalid question settings');
+ const random=rng;rng=()=>{const value=random();return Number.isFinite(value)&&value>=0&&value<1?value:.5;};
  let a,b,answer;
  const max=[0,10,50,100,1000][difficulty];
  if(operation==='addition'||operation==='subtraction'){
@@ -70,6 +71,8 @@ export function priority(m,now=Date.now()){
  return Math.max(.1,(m.misses+1)/(m.successes+1)/(1+days/7));
 }
 export function nextQuestion(config,mistakes,rng=Math.random,previous=null){
+ if(!config||!Array.isArray(config.operations)||!config.operations.length||config.operations.some(op=>!OPS[op])||![1,2,3,4].includes(config.difficulty))throw new Error('Invalid session configuration');
+ const random=rng;rng=()=>{const value=random();return Number.isFinite(value)&&value>=0&&value<1?value:.5;};
  const pool=mistakes.filter(m=>!m.mastered&&config.operations.includes(m.operation));
  const weights=pool.map(m=>priority(m));let ticket=rng()*weights.reduce((a,b)=>a+b,0);
  const pattern=config.mode==='review'&&pool.length?pool.find((m,i)=>(ticket-=weights[i])<=0)||pool.at(-1):null;
@@ -89,6 +92,7 @@ export function nextQuestion(config,mistakes,rng=Math.random,previous=null){
   q=question(op,pattern.difficulty,()=>.43);
   if(signature(q)===pattern.id)q=question(op,pattern.difficulty,()=>.71);
  }
+ if(!validQuestion(q)){console.error('Question validation failed; using safe fallback');q=question(op,config.difficulty,()=>.5);}
  return {...q,...(pattern?{patternId:pattern.id}:{})};
 }
 export function stats(attempts){
@@ -115,18 +119,20 @@ export function load(storage){
  try{
   const raw=storage.getItem(KEY);if(!raw)return {state:fresh(),warning:''};
   const data=JSON.parse(raw);
-  if(data.version!==1||!Array.isArray(data.attempts)||!Array.isArray(data.sessions)||!Array.isArray(data.mistakes))throw new Error('Invalid data');
+  if(!data||typeof data!=='object'||(data.version!==undefined&&data.version!==0&&data.version!==1))throw new Error('Unsupported data version');
   const base=fresh();base.settings={...DEFAULTS,...data.settings};
   if(!Array.isArray(base.settings.operations)||!base.settings.operations.length||base.settings.operations.some(o=>!OPS[o]))base.settings.operations=[...DEFAULTS.operations];
   if(![1,2,3,4].includes(base.settings.difficulty))base.settings.difficulty=2;
   if(![5,10,20,'continuous'].includes(base.settings.length))base.settings.length=10;
   if(!Number.isInteger(base.settings.mastery)||base.settings.mastery<1||base.settings.mastery>10)base.settings.mastery=3;
   for(const key of ['sound','animation','explanations','encouragement'])if(typeof base.settings[key]!=='boolean')base.settings[key]=DEFAULTS[key];
-  const validQ=q=>q&&OPS[q.operation]&&[1,2,3,4].includes(q.difficulty)&&[q.a,q.b,q.answer].every(Number.isFinite);
-  base.attempts=data.attempts.filter(a=>validQ(a)&&typeof a.correct==='boolean'&&typeof a.sessionId==='string');
-  base.sessions=data.sessions.filter(s=>s&&typeof s.id==='string'&&typeof s.started==='string'&&Number.isFinite(s.attempted));
-  base.mistakes=data.mistakes.filter(m=>validQ(m)&&typeof m.id==='string'&&Number.isFinite(m.successes)&&Number.isFinite(m.misses));
-  if(data.active&&validQ(data.active.q)&&Array.isArray(data.active.q.choices)&&Array.isArray(data.active.config?.operations)&&data.active.config.operations.length&&data.active.config.operations.every(o=>OPS[o])&&[1,2,3,4].includes(data.active.config.difficulty)&&[5,10,20,'continuous'].includes(data.active.config.length)&&Number.isFinite(data.active.count))base.active=data.active;
+  const validQ=validQuestion;
+  const validConfig=c=>c&&Array.isArray(c.operations)&&c.operations.length&&c.operations.every(o=>OPS[o])&&[1,2,3,4].includes(c.difficulty)&&[5,10,20,'continuous'].includes(c.length)&&['regular','review'].includes(c.mode);
+  base.attempts=(Array.isArray(data.attempts)?data.attempts:[]).filter(a=>validQ(a)&&typeof a.correct==='boolean'&&typeof a.sessionId==='string');
+  base.sessions=(Array.isArray(data.sessions)?data.sessions:[]).filter(s=>s&&typeof s.id==='string'&&typeof s.started==='string'&&Number.isFinite(Date.parse(s.started))&&validConfig(s.config)&&Number.isFinite(s.attempted)&&Number.isFinite(s.accuracy));
+  base.mistakes=(Array.isArray(data.mistakes)?data.mistakes:[]).filter(m=>validQ(m)&&typeof m.id==='string'&&Number.isFinite(m.successes)&&Number.isFinite(m.misses)&&typeof m.mastered==='boolean');
+  const ac=data.active;
+  if(ac&&validQ(ac.q)&&Array.isArray(ac.q.choices)&&ac.q.choices.length===4&&new Set(ac.q.choices).size===4&&ac.q.choices.includes(ac.q.answer)&&ac.q.choices.every(Number.isInteger)&&validConfig(ac.config)&&Number.isInteger(ac.count)&&ac.count>=0&&typeof ac.id==='string'&&typeof ac.flipped==='boolean'&&(!ac.flipped||ac.q.choices.includes(ac.selected))&&(ac.config.length==='continuous'||ac.count<ac.config.length)&&ac.recorded!==true)base.active=ac;
   return {state:base,warning:''};
  }catch{return {state:fresh(),warning:'Saved progress could not be read. This session will still work. Existing stored data has not been erased.'};}
 }

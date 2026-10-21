@@ -1,0 +1,19 @@
+import React from 'react';
+import {describe,it,expect,vi} from 'vitest';
+import {render,screen,fireEvent} from '@testing-library/react';
+import {createMemoryRouter,RouterProvider} from 'react-router-dom';
+import {App,QuestionCard} from '../src/App.jsx';
+import {DEFAULTS,KEY} from '../src/core.js';
+const q={operation:'multiplication',difficulty:2,a:7,b:8,answer:56,choices:[48,54,56,64]};
+const app=route=>{window.localStorage.clear();const router=createMemoryRouter([{path:'*',element:<App/>}],{initialEntries:[route]});return render(<RouterProvider router={router}/>);};
+describe('Question card',()=>{
+ it('requires a choice before revealing',()=>{const select=vi.fn();render(<QuestionCard q={q} selected={null} flipped={false} onSelect={select} settings={DEFAULTS}/>);expect(screen.getByRole('button',{name:/Flip Card/})).toBeDisabled();fireEvent.click(screen.getByRole('button',{name:/56/}));expect(select).toHaveBeenCalledWith(56);});
+ it('only reveals when requested and allows either self-reported result',()=>{const flip=vi.fn(),result=vi.fn();const view=render(<QuestionCard q={q} selected={54} flipped={false} onSelect={()=>{}} onFlip={flip} onResult={result} settings={DEFAULTS}/>);fireEvent.click(screen.getByRole('button',{name:/Flip Card/}));expect(flip).toHaveBeenCalledOnce();view.rerender(<QuestionCard q={q} selected={54} flipped={true} onResult={result} settings={DEFAULTS}/>);expect(screen.getByText(/Your answer:/)).toHaveTextContent('54');expect(screen.queryByRole('button',{name:/Flip Card/})).not.toBeInTheDocument();fireEvent.click(screen.getByRole('button',{name:/I Got It Right/}));expect(result).toHaveBeenCalledWith(true);fireEvent.click(screen.getByRole('button',{name:/I Got It Wrong/}));expect(result).toHaveBeenCalledWith(false);});
+ it('honors explanation and animation settings',()=>{const {container}=render(<QuestionCard q={q} selected={56} flipped onResult={()=>{}} settings={{...DEFAULTS,explanations:false,animation:false}}/>);expect(screen.queryByText(/groups of/)).not.toBeInTheDocument();expect(container.querySelector('.animated')).toBeNull();});
+});
+describe('Practice integration',()=>{
+ it('disables start with no selected operations and handles default choices',()=>{app('/practice/setup');fireEvent.click(screen.getByLabelText('Select all operations'));expect(screen.getByRole('button',{name:/Start Session/})).toBeDisabled();fireEvent.click(screen.getByLabelText(/Addition/));fireEvent.click(screen.getByLabelText(/Beginner/));fireEvent.click(screen.getByLabelText('5 questions'));expect(screen.getByRole('button',{name:/Start Session/})).toBeEnabled();});
+ it('completes five questions, saves mistakes and enables review on summary',async()=>{app('/practice/setup');fireEvent.click(screen.getByLabelText('5 questions'));fireEvent.click(screen.getByRole('button',{name:/Start Session/}));for(let i=0;i<5;i++){const options=screen.getAllByRole('button').filter(b=>b.querySelector('kbd'));fireEvent.click(options[0]);fireEvent.click(screen.getByRole('button',{name:/Flip Card/}));fireEvent.click(screen.getByRole('button',{name:/I Got It Wrong/}));}expect(await screen.findByRole('heading',{name:'Session Complete!'})).toBeInTheDocument();expect(screen.getByRole('button',{name:/Practice Mistakes/})).toBeEnabled();const saved=JSON.parse(window.localStorage.getItem(KEY));expect(saved.attempts).toHaveLength(5);expect(saved.sessions[0].incorrect).toBe(5);expect(saved.mistakes.length).toBeGreaterThan(0);expect(saved.active).toBeNull();});
+ it('unexpected session URLs redirect to setup',()=>{app('/practice/session');expect(screen.getByRole('heading',{name:/Make room to grow/})).toBeInTheDocument();});
+ it('unknown routes offer a way home',()=>{app('/unknown');expect(screen.getByRole('link',{name:'Return Home'})).toHaveAttribute('href','/');});
+});

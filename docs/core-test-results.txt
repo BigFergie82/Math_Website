@@ -1,0 +1,47 @@
+✔ addition level 1: 1000 valid questions and unique choices (4.3845ms)
+✔ addition level 2: 1000 valid questions and unique choices (2.6277ms)
+✔ addition level 3: 1000 valid questions and unique choices (1.506ms)
+✔ addition level 4: 1000 valid questions and unique choices (1.0827ms)
+✔ subtraction level 1: 1000 valid questions and unique choices (2.4228ms)
+✔ subtraction level 2: 1000 valid questions and unique choices (1.5035ms)
+✔ subtraction level 3: 1000 valid questions and unique choices (1.1166ms)
+✔ subtraction level 4: 1000 valid questions and unique choices (1.1612ms)
+✔ multiplication level 1: 1000 valid questions and unique choices (2.1803ms)
+✔ multiplication level 2: 1000 valid questions and unique choices (1.3698ms)
+✔ multiplication level 3: 1000 valid questions and unique choices (1.731ms)
+✔ multiplication level 4: 1000 valid questions and unique choices (1.5559ms)
+✔ division level 1: 1000 valid questions and unique choices (2.0892ms)
+✔ division level 2: 1000 valid questions and unique choices (1.308ms)
+✔ division level 3: 1000 valid questions and unique choices (1.2583ms)
+✔ division level 4: 1000 valid questions and unique choices (1.2252ms)
+✔ range endpoints and constant random sources cannot stall generation (0.2647ms)
+✔ the correct answer is shuffled across all four positions (0.2705ms)
+✔ invalid generator settings are rejected (0.203ms)
+✔ related addition questions keep constraints and link to the original (3.1033ms)
+✔ related subtraction questions keep constraints and link to the original (1.7834ms)
+✔ related multiplication questions keep constraints and link to the original (2.9378ms)
+✔ related division questions keep constraints and link to the original (2.3138ms)
+✔ review includes reversed, nearby and inverse fact-family questions (3.9199ms)
+✔ review stays inside selected operations (0.8843ms)
+✔ self-report is authoritative, an attempt saves once and mistakes are immediate (1.2469ms)
+✔ unflipped or unselected questions cannot be recorded (0.0907ms)
+✔ mastery after three successes, reset on failure and no duplicate patterns (0.1434ms)
+✔ custom mastery threshold is honored (0.0961ms)
+✔ review weighting favors frequent, recent and less successful patterns (0.1141ms)
+✔ zero and mixed statistics and session finalization are exact (0.6031ms)
+✔ persistence round-trip retains settings, active question, selection and mistakes (0.4161ms)
+✔ corrupt JSON and unavailable/full storage return friendly warnings (0.155ms)
+✔ invalid records and settings are recovered without dropping valid history (0.1439ms)
+✔ large histories preserve aggregates and serialize within ordinary storage limits (8.8943ms)
+✔ mastered patterns are excluded from review and the next question avoids repeats (0.8861ms)
+✔ one corrupt category does not discard other saved categories (0.2569ms)
+✔ corrupted active choices do not restore an unusable session (0.1213ms)
+✔ empty session operation lists fail with a controlled error (0.2389ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 130.0436
